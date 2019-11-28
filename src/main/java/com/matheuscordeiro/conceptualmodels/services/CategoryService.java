@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.matheuscordeiro.conceptualmodels.domain.Category;
 import com.matheuscordeiro.conceptualmodels.repositories.CategoryRepository;
+import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -16,8 +17,12 @@ public class CategoryService {
 
 	public Category find(Integer id) {
 
-		Optional<Category> obj = repository.findById(id);
-		return obj.orElse(null);
+		Optional<Category> object = repository.findById(id);
+		if(object == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! id:" + id
+					+ ", Tipo:" + Category.class.getName());
+		}
+		return object.orElse(null);
 	}
 
 }

@@ -27,7 +27,6 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
 		Category cat1 = new Category(null, "Informática");
 		Category cat2 = new Category(null, "Escritório");
 		
