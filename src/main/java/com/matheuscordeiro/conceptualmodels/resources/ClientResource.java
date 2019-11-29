@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.matheuscordeiro.conceptualmodels.domain.Category;
-import com.matheuscordeiro.conceptualmodels.services.CategoryService;
+import com.matheuscordeiro.conceptualmodels.domain.Client;
+import com.matheuscordeiro.conceptualmodels.services.ClientService;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoryResource {
+@RequestMapping(value = "/clientes")
+public class ClientResource {
 
 	@Autowired
-	private CategoryService service;
+	private ClientService service;
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Category object = service.find(id);
+		Client object = service.find(id);
 		return ResponseEntity.ok().body(object);
 	}
 }
