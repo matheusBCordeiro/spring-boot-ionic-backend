@@ -1,5 +1,6 @@
 package com.matheuscordeiro.conceptualmodels;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.matheuscordeiro.conceptualmodels.domain.Address;
+import com.matheuscordeiro.conceptualmodels.domain.BilletPayment;
+import com.matheuscordeiro.conceptualmodels.domain.CardPayment;
 import com.matheuscordeiro.conceptualmodels.domain.Category;
 import com.matheuscordeiro.conceptualmodels.domain.City;
 import com.matheuscordeiro.conceptualmodels.domain.Client;
+import com.matheuscordeiro.conceptualmodels.domain.Order;
+import com.matheuscordeiro.conceptualmodels.domain.Payment;
 import com.matheuscordeiro.conceptualmodels.domain.Product;
 import com.matheuscordeiro.conceptualmodels.domain.State;
 import com.matheuscordeiro.conceptualmodels.domain.enums.ClientType;
+import com.matheuscordeiro.conceptualmodels.domain.enums.PaymentStatus;
 import com.matheuscordeiro.conceptualmodels.repositories.AddressRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CategoryRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CityRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
+import com.matheuscordeiro.conceptualmodels.repositories.OrderRepository;
+import com.matheuscordeiro.conceptualmodels.repositories.PaymentRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ProductRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.StateRepository;
 
@@ -46,6 +54,11 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 	@Autowired
 	private AddressRepository addressRepository;
 	
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		Category cat1 = new Category(null, "Computing");
@@ -65,17 +78,17 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
-		State est1 = new State(null, "Minas Gerais");
-		State est2 = new State(null, "São Paulo");
+		State stt1 = new State(null, "Minas Gerais");
+		State stt2 = new State(null, "São Paulo");
 		
-		City c1 = new City(null, "Uberlândia", est1);
-		City c2 = new City(null, "São Paulo", est2);
-		City c3 = new City(null, "Campinas", est2);
+		City c1 = new City(null, "Uberlândia", stt1);
+		City c2 = new City(null, "São Paulo", stt2);
+		City c3 = new City(null, "Campinas", stt2);
 		
-		est1.getCities().addAll(Arrays.asList(c1));
-		est2.getCities().addAll(Arrays.asList(c2, c3));
+		stt1.getCities().addAll(Arrays.asList(c1));
+		stt2.getCities().addAll(Arrays.asList(c2, c3));
 
-		stateRepository.saveAll(Arrays.asList(est1, est2));
+		stateRepository.saveAll(Arrays.asList(stt1, stt2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.NATURALPERSON);
@@ -89,6 +102,21 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 		
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Order ord1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, a1);
+		Order ord2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, a2);
+		
+		Payment pay1 = new CardPayment(null, PaymentStatus.PAID, ord1, 6);
+		ord1.setPayment(pay1);
+		
+		Payment pay2 = new BilletPayment(null, PaymentStatus.PENDING, ord2, sdf.parse("20/10/2017 00:00"), null);
+		ord2.setPayment(pay2);
+		
+		cli1.getOrders().addAll(Arrays.asList(ord1, ord2));
+				
+		orderRepository.saveAll(Arrays.asList(ord1, ord2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 	}
-
 }
