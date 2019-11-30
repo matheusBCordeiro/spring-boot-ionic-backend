@@ -3,10 +3,12 @@ package com.matheuscordeiro.conceptualmodels.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.matheuscordeiro.conceptualmodels.domain.Category;
 import com.matheuscordeiro.conceptualmodels.repositories.CategoryRepository;
+import com.matheuscordeiro.conceptualmodels.services.exceptions.DataIntegrityException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -35,4 +37,12 @@ public class CategoryService {
 		return repository.save(object);
 	}
 	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repository.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Unable to delete a category that has products");
+		}
+	}
 }
