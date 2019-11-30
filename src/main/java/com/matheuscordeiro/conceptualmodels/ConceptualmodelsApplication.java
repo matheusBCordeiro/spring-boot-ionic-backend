@@ -15,6 +15,7 @@ import com.matheuscordeiro.conceptualmodels.domain.Category;
 import com.matheuscordeiro.conceptualmodels.domain.City;
 import com.matheuscordeiro.conceptualmodels.domain.Client;
 import com.matheuscordeiro.conceptualmodels.domain.Order;
+import com.matheuscordeiro.conceptualmodels.domain.OrderItem;
 import com.matheuscordeiro.conceptualmodels.domain.Payment;
 import com.matheuscordeiro.conceptualmodels.domain.Product;
 import com.matheuscordeiro.conceptualmodels.domain.State;
@@ -24,6 +25,7 @@ import com.matheuscordeiro.conceptualmodels.repositories.AddressRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CategoryRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CityRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
+import com.matheuscordeiro.conceptualmodels.repositories.OrderItemRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.OrderRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.PaymentRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ProductRepository;
@@ -56,8 +58,12 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -118,5 +124,18 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 				
 		orderRepository.saveAll(Arrays.asList(ord1, ord2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		
+		OrderItem oi1 = new OrderItem(ord1, p1, 0.00, 1, 2000.00);
+		OrderItem oi2 = new OrderItem(ord1, p3, 0.00, 2, 80.00);
+		OrderItem oi3 = new OrderItem(ord2, p2, 100.00, 1, 800.00);
+		
+		ord1.getItems().addAll(Arrays.asList(oi1, oi2));
+		ord2.getItems().addAll(Arrays.asList(oi3));
+		
+		p1.getItems().addAll(Arrays.asList(oi1));
+		p2.getItems().addAll(Arrays.asList(oi3));
+		p3.getItems().addAll(Arrays.asList(oi2));
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));	
 	}
 }
