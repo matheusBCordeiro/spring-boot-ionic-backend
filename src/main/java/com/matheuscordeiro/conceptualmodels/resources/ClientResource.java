@@ -11,7 +11,7 @@ import com.matheuscordeiro.conceptualmodels.domain.Client;
 import com.matheuscordeiro.conceptualmodels.services.ClientService;
 
 @RestController
-@RequestMapping(value = "/clientes")
+@RequestMapping(value = "/clients")
 public class ClientResource {
 
 	@Autowired
