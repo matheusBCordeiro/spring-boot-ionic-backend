@@ -105,7 +105,7 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 		Address a1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Address a2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 		
-		cli1.getAdresses().addAll(Arrays.asList(a1, a2));
+		cli1.getAddresses().addAll(Arrays.asList(a1, a2));
 		
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
