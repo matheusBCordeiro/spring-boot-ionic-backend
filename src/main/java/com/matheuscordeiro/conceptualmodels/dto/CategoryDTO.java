@@ -2,6 +2,10 @@ package com.matheuscordeiro.conceptualmodels.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.matheuscordeiro.conceptualmodels.domain.Category;
 
 public class CategoryDTO implements Serializable{
@@ -13,7 +17,9 @@ public class CategoryDTO implements Serializable{
 	public CategoryDTO() {
 		
 	}
-
+	
+	@NotEmpty(message="fill requerid")
+	@Length(min=5, max=80, message="Size must be between 5 and 80 characters")
 	public CategoryDTO(Category object) {
 		id = object.getId();
 		name = object.getNome();
