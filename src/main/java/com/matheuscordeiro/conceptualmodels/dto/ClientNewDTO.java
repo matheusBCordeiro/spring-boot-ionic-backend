@@ -126,7 +126,7 @@ public class ClientNewDTO implements Serializable{
 		return cityId;
 	}
 
-	public void setCityId(Integer idCity) {
+	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
 	}
 }

@@ -48,7 +48,7 @@ public class CategoryService {
 		try {
 			repository.deleteById(id);
 		}catch(DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Unable to delete a category that has products");
+			throw new DataIntegrityException("Unable to delete because there is orders request");
 		}
 	}
 	
