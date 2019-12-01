@@ -22,7 +22,7 @@ public class CategoryDTO implements Serializable{
 	@Length(min=5, max=80, message="Size must be between 5 and 80 characters")
 	public CategoryDTO(Category object) {
 		id = object.getId();
-		name = object.getNome();
+		name = object.getName();
 	}
 	
 	public Integer getId() {
