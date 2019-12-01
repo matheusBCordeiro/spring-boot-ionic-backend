@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -29,8 +30,8 @@ public class Client implements Serializable {
 	private String cpfORCnpj;
 	private Integer type;
 	
-	@OneToMany(mappedBy="client")
-	private List<Address> adresses = new ArrayList<>();
+	@OneToMany(mappedBy="client", cascade=CascadeType.ALL)
+	private List<Address> addresses = new ArrayList<>();
 	
 	@ElementCollection
 	@CollectionTable(name="PHONE")
@@ -93,12 +94,12 @@ public class Client implements Serializable {
 		this.type = type.getCode();
 	}
 
-	public List<Address> getAdresses() {
-		return adresses;
+	public List<Address> getAddresses() {
+		return addresses;
 	}
 
-	public void setAdresses(List<Address> adresses) {
-		this.adresses = adresses;
+	public void setAdresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 	public Set<String> getPhones() {
@@ -142,6 +143,4 @@ public class Client implements Serializable {
 			return false;
 		return true;
 	}
-
-	
 }

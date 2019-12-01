@@ -1,6 +1,7 @@
 package com.matheuscordeiro.conceptualmodels.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -138,5 +139,7 @@ public class Address implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+	public void saveAll(List<Address> adresses) {	
+	}
 }

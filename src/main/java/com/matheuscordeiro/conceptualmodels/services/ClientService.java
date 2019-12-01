@@ -9,18 +9,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.matheuscordeiro.conceptualmodels.domain.Address;
+import com.matheuscordeiro.conceptualmodels.domain.City;
 import com.matheuscordeiro.conceptualmodels.domain.Client;
+import com.matheuscordeiro.conceptualmodels.domain.enums.ClientType;
 import com.matheuscordeiro.conceptualmodels.dto.ClientDTO;
+import com.matheuscordeiro.conceptualmodels.dto.ClientNewDTO;
 import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.DataIntegrityException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
+
 
 @Service
 public class ClientService {
 
 	@Autowired
 	private ClientRepository repository;
+	
+	@Autowired
+	private Address addressRepository;
 
 	public Client find(Integer id) {
 
@@ -30,8 +39,17 @@ public class ClientService {
 					+ ", Type:" + Client.class.getName());
 		}
 		return object.orElse(null);
+		
 	}
-
+	
+	@Transactional
+	public Client insert(Client object) {
+		object.setId(null);
+		object = repository.save(object);
+		addressRepository.saveAll(object.getAddresses());
+		return object; 
+	}
+	
 	public Client update(Client object) {
 		Client newObject = find(object.getId());
 		updateData(newObject, object);
@@ -60,6 +78,21 @@ public class ClientService {
 		return new Client(objectDto.getId(), objectDto.getName(), objectDto.getEmail(), null , null);
 	}
 	
+	public Client fromDTO(ClientNewDTO objectDto) {
+		Client client = new Client(null, objectDto.getName(), objectDto.getEmail(), objectDto.getCpfORCnpj(), ClientType.toEnum(objectDto.getType()));
+		City city = new City(objectDto.getCityId(), null, null);
+		Address address = new Address(null, objectDto.getPlace(), objectDto.getNumber(), objectDto.getComplement(), objectDto.getDistrict(), objectDto.getCep(), client, city);
+		client.getAddresses().add(address);
+		client.getPhones().add(objectDto.getPhone1());
+		if (objectDto.getPhone2()!=null) {
+			client.getPhones().add(objectDto.getPhone2());
+		}
+		if (objectDto.getPhone3()!=null) {
+			client.getPhones().add(objectDto.getPhone3());
+		}
+		return client;
+	}
+
 	public void updateData(Client newObject, Client object) {
 		newObject.setName(object.getName());
 		newObject.setEmail(object.getEmail());
