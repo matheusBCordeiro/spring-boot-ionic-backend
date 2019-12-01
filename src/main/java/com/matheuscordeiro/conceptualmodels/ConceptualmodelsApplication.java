@@ -70,6 +70,7 @@ public class ConceptualmodelsApplication implements CommandLineRunner{
 		Category cat1 = new Category(null, "Computing");
 		Category cat2 = new Category(null, "Office");
 		
+		
 		Product p1 = new Product(null, "Computer", 2000.00);
 		Product p2 = new Product(null, "Printer", 800.00);
 		Product p3 = new Product(null, "Mouse", 80.00);
