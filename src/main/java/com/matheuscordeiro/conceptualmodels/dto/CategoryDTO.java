@@ -18,7 +18,7 @@ public class CategoryDTO implements Serializable{
 		
 	}
 	
-	@NotEmpty(message="fill requerid")
+	@NotEmpty(message="Fill requerid")
 	@Length(min=5, max=80, message="Size must be between 5 and 80 characters")
 	public CategoryDTO(Category object) {
 		id = object.getId();
