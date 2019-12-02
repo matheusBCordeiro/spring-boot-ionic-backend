@@ -24,6 +24,9 @@ public class OrderItem implements Serializable {
 		
 	}
 
+	public double getSubTotal() {
+		return (price - discount) * quantity;
+	}
 	public OrderItem(Order order, Product product, Double discount, Integer quantity, Double price) {
 		super();
 		id.setOrder(order);
