@@ -72,7 +72,7 @@ public class Category implements Serializable{
 		return true;
 	}
 
-	public List<Product> getProducts() {
+	public List<Product> getProducts(){
 		return products;
 	}
 
