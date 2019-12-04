@@ -94,6 +94,7 @@ public class Client implements Serializable {
 		this.type = type.getCode();
 	}
 
+	@OneToMany(mappedBy="client", cascade=CascadeType.ALL)
 	public List<Address> getAddresses() {
 		return addresses;
 	}

@@ -17,6 +17,7 @@ import com.matheuscordeiro.conceptualmodels.domain.Client;
 import com.matheuscordeiro.conceptualmodels.domain.enums.ClientType;
 import com.matheuscordeiro.conceptualmodels.dto.ClientDTO;
 import com.matheuscordeiro.conceptualmodels.dto.ClientNewDTO;
+import com.matheuscordeiro.conceptualmodels.repositories.AddressRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.DataIntegrityException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
@@ -29,7 +30,7 @@ public class ClientService {
 	private ClientRepository repository;
 	
 	@Autowired
-	private Address addressRepository;
+	private AddressRepository addressRepository;
 
 	public Client find(Integer id) {
 

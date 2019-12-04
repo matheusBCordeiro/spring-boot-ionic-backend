@@ -28,7 +28,7 @@ public class Order implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date instant;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "payment")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
 	
 	@ManyToOne

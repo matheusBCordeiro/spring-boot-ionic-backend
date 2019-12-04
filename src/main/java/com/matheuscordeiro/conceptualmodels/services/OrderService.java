@@ -14,6 +14,7 @@ import com.matheuscordeiro.conceptualmodels.repositories.OrderItemRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.OrderRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.PaymentRepository;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
+import com.matheuscordeiro.conceptualmodels.services.BilletService;
 
 @Service
 public class OrderService {
@@ -31,6 +32,7 @@ public class OrderService {
 	
 	@Autowired
 	private BilletService billetService;
+	
 	public Order find(Integer id) {
 
 		Optional<Order> object = repository.findById(id);
