@@ -13,7 +13,7 @@ import com.matheuscordeiro.conceptualmodels.services.DBService;
 @Configuration
 @Profile("dev")
 public class DevConfig {
-	
+
 	@Autowired
 	private DBService dbService;
 	
@@ -26,6 +26,7 @@ public class DevConfig {
 		if (!"create".equals(strategy)) {
 			return false;
 		}
+		
 		dbService.instantiateTestDatabase();
 		return true;
 	}
