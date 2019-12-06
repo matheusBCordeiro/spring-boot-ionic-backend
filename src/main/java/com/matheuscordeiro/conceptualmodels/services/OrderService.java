@@ -26,12 +26,16 @@ public class OrderService {
 	private PaymentRepository paymentRepository;
 	
 	@Autowired
-	private ProductService productService;	
+	private ProductService productService;
+	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 	
 	@Autowired
 	private BilletService billetService;
+	
+	@Autowired
+	private ClientService clientService;
 	
 	public Order find(Integer id) {
 
@@ -46,6 +50,7 @@ public class OrderService {
 	public Order insert(Order object) {
 		object.setId(null);
 		object.setInstant(new Date());
+		object.setClient(clientService.find(object.getClient().getId()));
 		object.getPayment().setStatus(PaymentStatus.PENDING);
 		object.getPayment().setOrder(object);
 		if (object.getPayment() instanceof BilletPayment) {
@@ -62,6 +67,7 @@ public class OrderService {
 			ip.setOrder(object);
 		}
 		orderItemRepository.saveAll(object.getItems());
+		System.out.println(object);
 		return object;
 	}
 
