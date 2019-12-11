@@ -26,6 +26,9 @@ public class ClientNewDTO implements Serializable{
 	private Integer type;
 	
 	@NotEmpty(message="Fill requerid")
+	private String password;
+	
+	@NotEmpty(message="Fill requerid")
 	private String place;
 	
 	@NotEmpty(message="Fill requerid")
@@ -80,6 +83,13 @@ public class ClientNewDTO implements Serializable{
 		this.type = type;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getPlace() {
 		return place;
 	}

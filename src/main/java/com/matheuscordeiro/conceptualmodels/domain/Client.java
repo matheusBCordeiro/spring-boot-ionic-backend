@@ -23,35 +23,39 @@ public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private String email;
 	private String cpfORCnpj;
 	private Integer type;
 	
-	@OneToMany(mappedBy="client", cascade=CascadeType.ALL)
+	@JsonIgnore
+	private String password;
+
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private List<Address> addresses = new ArrayList<>();
-	
+
 	@ElementCollection
-	@CollectionTable(name="PHONE")
+	@CollectionTable(name = "PHONE")
 	private Set<String> phones = new HashSet<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
-	
+
 	public Client() {
-		
+
 	}
 
-	public Client(Integer id, String name, String email, String cpfORCnpj, ClientType type) {
+	public Client(Integer id, String name, String email, String cpfORCnpj, ClientType type, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpfORCnpj = cpfORCnpj;
-		this.type = (type==null) ? null : type.getCode();
+		this.type = (type == null) ? null : type.getCode();
+		this.password = password;
 	}
 
 	public Integer getId() {
@@ -94,7 +98,7 @@ public class Client implements Serializable {
 		this.type = type.getCode();
 	}
 
-	@OneToMany(mappedBy="client", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -111,13 +115,20 @@ public class Client implements Serializable {
 		this.phones = phones;
 	}
 
-	
 	public List<Order> getOrders() {
 		return orders;
 	}
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
