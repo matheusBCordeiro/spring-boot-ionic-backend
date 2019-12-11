@@ -21,6 +21,7 @@ import com.matheuscordeiro.conceptualmodels.domain.Product;
 import com.matheuscordeiro.conceptualmodels.domain.State;
 import com.matheuscordeiro.conceptualmodels.domain.enums.ClientType;
 import com.matheuscordeiro.conceptualmodels.domain.enums.PaymentStatus;
+import com.matheuscordeiro.conceptualmodels.domain.enums.Profile;
 import com.matheuscordeiro.conceptualmodels.repositories.AddressRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CategoryRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.CityRepository;
@@ -95,17 +96,23 @@ public class DBService {
 		stateRepository.saveAll(Arrays.asList(stt1, stt2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com.br", "36378912377", ClientType.NATURALPERSON, pe.encode("123"));
-
+		Client cli1 = new Client(null, "Maria Silva", "nelio.cursos@gmail.com.br", "36378912377", ClientType.NATURALPERSON, pe.encode("123"));
 		cli1.getPhones().addAll(Arrays.asList("27363323", "93838393"));
+		
+		
+		Client cli2 = new Client(null, "Ana Costa", "nelio.iftm@gmail.com", "31628382740",ClientType.NATURALPERSON, pe.encode("123"));
+		cli2.getPhones().addAll(Arrays.asList("93883321", "34252625"));
+		cli2.addProfile(Profile.ADMIN);
 
 		Address a1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Address a2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Address a3 = new Address(null, "Avenida Floriano", "2106", null, "Centro", "281777012", cli2, c2);
 
 		cli1.getAddresses().addAll(Arrays.asList(a1, a2));
+		cli2.getAddresses().addAll(Arrays.asList(a3));
 
-		clientRepository.saveAll(Arrays.asList(cli1));
-		addressRepository.saveAll(Arrays.asList(a1, a2));
+		clientRepository.saveAll(Arrays.asList(cli1,cli2));
+		addressRepository.saveAll(Arrays.asList(a1, a2,a3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
