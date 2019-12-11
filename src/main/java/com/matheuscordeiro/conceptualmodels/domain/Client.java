@@ -139,7 +139,7 @@ public class Client implements Serializable {
 		this.password = password;
 	}
 	
-	public Set<Profile> getPerfis() {
+	public Set<Profile> getProfile() {
 		return profile.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
 	}
 
