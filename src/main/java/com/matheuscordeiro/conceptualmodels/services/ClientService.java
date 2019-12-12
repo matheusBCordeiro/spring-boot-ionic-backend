@@ -16,83 +16,90 @@ import com.matheuscordeiro.conceptualmodels.domain.Address;
 import com.matheuscordeiro.conceptualmodels.domain.City;
 import com.matheuscordeiro.conceptualmodels.domain.Client;
 import com.matheuscordeiro.conceptualmodels.domain.enums.ClientType;
+import com.matheuscordeiro.conceptualmodels.domain.enums.Profile;
 import com.matheuscordeiro.conceptualmodels.dto.ClientDTO;
 import com.matheuscordeiro.conceptualmodels.dto.ClientNewDTO;
 import com.matheuscordeiro.conceptualmodels.repositories.AddressRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
+import com.matheuscordeiro.conceptualmodels.security.UserSS;
+import com.matheuscordeiro.conceptualmodels.services.exceptions.AuthorizationException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.DataIntegrityException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
-
 
 @Service
 public class ClientService {
 
 	@Autowired
 	private ClientRepository repository;
-	
+
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder pe;
 
 	public Client find(Integer id) {
 
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acess denied");
+		}
 		Optional<Client> object = repository.findById(id);
-		if(object == null) {
-			throw new ObjectNotFoundException("Object not found! id:" + id
-					+ ", Type:" + Client.class.getName());
+		if (object == null) {
+			throw new ObjectNotFoundException("Object not found! id:" + id + ", Type:" + Client.class.getName());
 		}
 		return object.orElse(null);
-		
+
 	}
-	
+
 	@Transactional
 	public Client insert(Client object) {
 		object.setId(null);
 		object = repository.save(object);
 		addressRepository.saveAll(object.getAddresses());
-		return object; 
+		return object;
 	}
-	
+
 	public Client update(Client object) {
 		Client newObject = find(object.getId());
 		updateData(newObject, object);
 		return repository.save(newObject);
 	}
-	
+
 	public void delete(Integer id) {
 		find(id);
 		try {
 			repository.deleteById(id);
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Unable to delete because there are related entities");
 		}
 	}
-	
-	public List<Client>  findAll(){
+
+	public List<Client> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repository.findAll(pageRequest);
 	}
-	
+
 	public Client fromDTO(ClientDTO objectDto) {
-		return new Client(objectDto.getId(), objectDto.getName(), objectDto.getEmail(), null , null,null);
+		return new Client(objectDto.getId(), objectDto.getName(), objectDto.getEmail(), null, null, null);
 	}
-	
+
 	public Client fromDTO(ClientNewDTO objectDto) {
-		Client client = new Client(null, objectDto.getName(), objectDto.getEmail(), objectDto.getCpfORCnpj(), ClientType.toEnum(objectDto.getType()), pe.encode(objectDto.getPassword()));
+		Client client = new Client(null, objectDto.getName(), objectDto.getEmail(), objectDto.getCpfORCnpj(),
+				ClientType.toEnum(objectDto.getType()), pe.encode(objectDto.getPassword()));
 		City city = new City(objectDto.getCityId(), null, null);
-		Address address = new Address(null, objectDto.getPlace(), objectDto.getNumber(), objectDto.getComplement(), objectDto.getDistrict(), objectDto.getCep(), client, city);
+		Address address = new Address(null, objectDto.getPlace(), objectDto.getNumber(), objectDto.getComplement(),
+				objectDto.getDistrict(), objectDto.getCep(), client, city);
 		client.getAddresses().add(address);
 		client.getPhones().add(objectDto.getPhone1());
-		if (objectDto.getPhone2()!=null) {
+		if (objectDto.getPhone2() != null) {
 			client.getPhones().add(objectDto.getPhone2());
 		}
-		if (objectDto.getPhone3()!=null) {
+		if (objectDto.getPhone3() != null) {
 			client.getPhones().add(objectDto.getPhone3());
 		}
 		return client;
