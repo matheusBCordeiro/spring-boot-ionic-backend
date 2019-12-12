@@ -4,17 +4,22 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.matheuscordeiro.conceptualmodels.domain.BilletPayment;
+import com.matheuscordeiro.conceptualmodels.domain.Client;
 import com.matheuscordeiro.conceptualmodels.domain.Order;
 import com.matheuscordeiro.conceptualmodels.domain.OrderItem;
 import com.matheuscordeiro.conceptualmodels.domain.enums.PaymentStatus;
 import com.matheuscordeiro.conceptualmodels.repositories.OrderItemRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.OrderRepository;
 import com.matheuscordeiro.conceptualmodels.repositories.PaymentRepository;
+import com.matheuscordeiro.conceptualmodels.security.UserSS;
+import com.matheuscordeiro.conceptualmodels.services.exceptions.AuthorizationException;
 import com.matheuscordeiro.conceptualmodels.services.exceptions.ObjectNotFoundException;
-import com.matheuscordeiro.conceptualmodels.services.BilletService;
 
 @Service
 public class OrderService {
@@ -72,6 +77,16 @@ public class OrderService {
 		orderItemRepository.saveAll(object.getItems());
 		emailService.sendOrderConfirmationHtmlEmail(object);
 		return object;
+	}
+	
+	public Page<Order> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Client client =  clientService.find(user.getId());
+		return repository.findByClient(client, pageRequest);
 	}
 
 }
