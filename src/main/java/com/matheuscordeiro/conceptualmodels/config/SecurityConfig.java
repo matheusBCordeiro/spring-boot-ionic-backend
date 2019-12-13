@@ -44,11 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/products/**",
 			"/categories/**",
+			
 	};
 	
-	@SuppressWarnings("unused")
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/clients/**"
+			"/clients/**",
+			"/auth/forgot/**"
 	};
 
 	@Override

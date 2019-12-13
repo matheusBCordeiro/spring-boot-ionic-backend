@@ -17,11 +17,11 @@ public class ClientDTO implements Serializable{
 
 	private Integer id;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	@Length(min=5, max=120, message="Size must be between 5 and 120 characters")
 	private String name;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	@Email(message="Invalid Email")
 	private String email;
 	

@@ -13,34 +13,34 @@ import com.matheuscordeiro.conceptualmodels.services.validation.ClientInsert;
 public class ClientNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	@Length(min=5, max=120, message="Size must be between 5 and 120 characters")
 	private String name;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	@Email(message="Invalid Email")
 	private String email;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String cpfORCnpj;
 	private Integer type;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String password;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String place;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String number;
 	
 	private String complement;
 	private String district;
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String cep; 
 	
-	@NotEmpty(message="Fill requerid")
+	@NotEmpty(message="Field requerid")
 	private String phone1;
 	private String phone2;
 	private String phone3;
