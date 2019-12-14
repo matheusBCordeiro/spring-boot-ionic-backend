@@ -54,7 +54,9 @@ public class Client implements Serializable {
 	public Client() {
 		addProfile(Profile.CLIENT);
 	}
-
+	
+	private String imageUrl;
+	
 	public Client(Integer id, String name, String email, String cpfORCnpj, ClientType type, String password) {
 		super();
 		this.id = id;
@@ -145,6 +147,14 @@ public class Client implements Serializable {
 
 	public void addProfile(Profile profiles) {
 		profile.add(profiles.getCod());
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	@Override
