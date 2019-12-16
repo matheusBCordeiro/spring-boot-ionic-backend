@@ -18,7 +18,7 @@ import com.matheuscordeiro.conceptualmodels.services.CityService;
 import com.matheuscordeiro.conceptualmodels.services.StateService;
 
 @RestController
-@RequestMapping(value="/staties")
+@RequestMapping(value="/states")
 public class StateResource {
 
 	@Autowired
