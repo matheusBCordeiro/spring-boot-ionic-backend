@@ -2,40 +2,26 @@ package com.matheuscordeiro.conceptualmodels.services;
 
 import java.util.Date;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import com.matheuscordeiro.conceptualmodels.domain.Client;
-import com.matheuscordeiro.conceptualmodels.domain.Order;
+import com.matheuscordeiro.conceptualmodels.domain.Cliente;
+import com.matheuscordeiro.conceptualmodels.domain.Pedido;
 
 public abstract class AbstractEmailService implements EmailService {
 	
 	@Value("${default.sender}")
 	private String sender;
 	
-	@Autowired
-	private TemplateEngine templateEngine;
-	
-	@Autowired
-	private JavaMailSender javaMailSender;
-	
 	@Override
-	public void sendOrderConfirmationEmail(Order obj) {
-		SimpleMailMessage sm = prepareSimpleMailMessageFromOrder(obj);
+	public void sendOrderConfirmationEmail(Pedido obj) {
+		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
 
-	protected SimpleMailMessage prepareSimpleMailMessageFromOrder(Order obj) {
+	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		sm.setTo(obj.getClient().getEmail());
+		sm.setTo(obj.getCliente().getEmail());
 		sm.setFrom(sender);
 		sm.setSubject("Pedido confirmado! Código: " + obj.getId());
 		sm.setSentDate(new Date(System.currentTimeMillis()));
@@ -43,48 +29,19 @@ public abstract class AbstractEmailService implements EmailService {
 		return sm;
 	}
 	
-	protected String htmlFromTemplatePedido(Order obj) {
-		Context context = new Context();
-		context.setVariable("order", obj);
-		return templateEngine.process("email/confirmacaoPedido", context);
-	}
-	
 	@Override
-	public void sendOrderConfirmationHtmlEmail(Order obj) {
-		try {
-			MimeMessage mm = prepareMimeMessageFromPedido(obj);
-			sendHtmlEmail(mm);
-		}
-		catch (MessagingException e) {
-			sendOrderConfirmationEmail(obj);
-		}
-	}
-
-	protected MimeMessage prepareMimeMessageFromPedido(Order obj) throws MessagingException {
-		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
-		mmh.setTo(obj.getClient().getEmail());
-		mmh.setFrom(sender);
-		mmh.setSubject("Pedido confirmado! Código: " + obj.getId());
-		mmh.setSentDate(new Date(System.currentTimeMillis()));
-		mmh.setText(htmlFromTemplatePedido(obj), true);
-		return mimeMessage;
-	}
-	
-	@Override
-	public void sendNewPasswordEmail(Client client, String newPass) {
-		SimpleMailMessage sm = prepareNewPasswordEmail(client, newPass);
+	public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+		SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
 		sendEmail(sm);
 	}
-
-	protected SimpleMailMessage prepareNewPasswordEmail(Client client, String newPass) {
+	
+	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		sm.setTo(client.getEmail());
+		sm.setTo(cliente.getEmail());
 		sm.setFrom(sender);
-		sm.setSubject("Request new password");
+		sm.setSubject("Solicitação de nova senha");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText("new password: " + newPass);
+		sm.setText("Nova senha: " + newPass);
 		return sm;
 	}
-
 }

@@ -1,21 +1,15 @@
 package com.matheuscordeiro.conceptualmodels.services;
 
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.mail.SimpleMailMessage;
 
-import com.matheuscordeiro.conceptualmodels.domain.Client;
-import com.matheuscordeiro.conceptualmodels.domain.Order;
+import com.matheuscordeiro.conceptualmodels.domain.Cliente;
+import com.matheuscordeiro.conceptualmodels.domain.Pedido;
 
 public interface EmailService {
 
-	void sendOrderConfirmationEmail(Order obj);
+	void sendOrderConfirmationEmail(Pedido obj);
 
 	void sendEmail(SimpleMailMessage msg);
 
-	void sendOrderConfirmationHtmlEmail(Order obj);
-
-	void sendHtmlEmail(MimeMessage msg);
-
-	void sendNewPasswordEmail(Client client, String newPass);;
+	void sendNewPasswordEmail(Cliente cliente, String newPass);;
 }

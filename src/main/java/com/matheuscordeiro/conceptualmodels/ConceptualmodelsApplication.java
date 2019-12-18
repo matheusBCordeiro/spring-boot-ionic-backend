@@ -1,25 +1,21 @@
 package com.matheuscordeiro.conceptualmodels;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.matheuscordeiro.conceptualmodels.services.S3Service;
-
 @SpringBootApplication
 public class ConceptualmodelsApplication  implements CommandLineRunner {
-	
+
 	public static void main(String[] args) {
-		SpringApplication.run(ConceptualmodelsApplication .class, args);
+		SpringApplication.run(ConceptualmodelsApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {	
 	}	
-
-	
 }
+
 
 
 

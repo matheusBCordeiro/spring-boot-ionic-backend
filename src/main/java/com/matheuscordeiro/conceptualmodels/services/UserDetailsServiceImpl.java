@@ -6,22 +6,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.matheuscordeiro.conceptualmodels.domain.Client;
-import com.matheuscordeiro.conceptualmodels.repositories.ClientRepository;
+import com.matheuscordeiro.conceptualmodels.domain.Cliente;
+import com.matheuscordeiro.conceptualmodels.repositories.ClienteRepository;
 import com.matheuscordeiro.conceptualmodels.security.UserSS;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private ClientRepository repo;
-
+	private ClienteRepository repo;
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Client cli = repo.findByEmail(email);
+		Cliente cli = repo.findByEmail(email);
 		if (cli == null) {
 			throw new UsernameNotFoundException(email);
 		}
-		return new UserSS(cli.getId(), cli.getEmail(), cli.getPassword(), cli.getProfile());
+		return new UserSS(cli.getId(), cli.getEmail(), cli.getSenha(), cli.getPerfis());
 	}
 }

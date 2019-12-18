@@ -18,6 +18,7 @@ import com.matheuscordeiro.conceptualmodels.services.exceptions.FileException;
 
 @Service
 public class S3Service {
+
 	private Logger LOG = LoggerFactory.getLogger(S3Service.class);
 
 	@Autowired

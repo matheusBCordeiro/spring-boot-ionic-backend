@@ -8,31 +8,31 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.matheuscordeiro.conceptualmodels.domain.enums.Profile;
+import com.matheuscordeiro.conceptualmodels.domain.enums.Perfil;
 
 public class UserSS implements UserDetails {
 	private static final long serialVersionUID = 1L;
-
+	
 	private Integer id;
 	private String email;
-	private String password;
+	private String senha;
 	private Collection<? extends GrantedAuthority> authorities;
-
+	
 	public UserSS() {
 	}
-
-	public UserSS(Integer id, String email, String password, Set<Profile> profiles) {
+	
+	public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
 		super();
 		this.id = id;
 		this.email = email;
-		this.password = password;
-		this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
+		this.senha = senha;
+		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
 	}
 
 	public Integer getId() {
 		return id;
 	}
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -40,7 +40,7 @@ public class UserSS implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return senha;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 	
-	public boolean hasRole(Profile profile) {
-		return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescription()));
+	public boolean hasRole(Perfil perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
 	}
 }
